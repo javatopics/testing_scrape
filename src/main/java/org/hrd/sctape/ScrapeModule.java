@@ -49,8 +49,8 @@ public class ScrapeModule {
 		
 		//scrape.extractDataByClassSelector("https://www.yp.com.kh/search_results?q=restuarant", "img_section col-xs-2 nopad");
 		//scrape.extractDataBySelector("https://www.yp.com.kh/search_results?q=restuarant", "span.sm-block ");
-		scrape.extractDataBySelector("https://www.yp.com.kh/search_results?q=restuarant", "h2 > b");
-		
+		//scrape.extractDataBySelector("https://www.yp.com.kh/search_results?q=restuarant", "h2 > b");
+		scrape.extractDataBySelect("https://www.yp.com.kh/search_results?q=restuarant", "img[src~=(?i)\\.(png|jpe?g|fig)]");
 	
 	}
 	
@@ -112,7 +112,7 @@ public class ScrapeModule {
 	private void extractDataBySelector(String url,String selector){
 		Document document=connectUrl(url);
 		//System.out.println(document);
-		this.writeToFile("E:\\Scrape\\yp\\search-result.html",document.toString());
+		writeToFile("E:\\Scrape\\yp\\search-result.html",document.toString());
 		try{
 			Elements articals= document.select(selector);
 			
@@ -129,8 +129,31 @@ public class ScrapeModule {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
 	}
+	
+	private void extractDataBySelect(String url , String pattern){
+		Document document = connectUrl(url);
+		try{
+			Elements imgs= document.select(pattern);
+			for(Element img: imgs){
+				//System.out.println(img);
+				/*System.out.println("---------------------------");
+				System.out.println(img.attr("src"));
+				System.out.println(img.attr("width"));
+				System.out.println(img.attr("height"));
+				System.out.println(img.attr("alt"));*/
+				
+				
+				/*Document doc=connectUrl("https://www.yp.com.kh/"+img.attr("src"));
+				Elements el=doc.getElementsByClass("tab-content");
+				System.out.println(el);*/
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 	private void writeToFile(String f,String text){
 		
 		File file=new File(f);
