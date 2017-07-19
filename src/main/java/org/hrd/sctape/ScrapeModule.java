@@ -50,7 +50,7 @@ public class ScrapeModule {
 		//scrape.extractDataByClassSelector("https://www.yp.com.kh/search_results?q=restuarant", "img_section col-xs-2 nopad");
 		//scrape.extractDataBySelector("https://www.yp.com.kh/search_results?q=restuarant", "span.sm-block ");
 		//scrape.extractDataBySelector("https://www.yp.com.kh/search_results?q=restuarant", "h2 > b");
-		scrape.extractDataBySelect("https://www.yp.com.kh/search_results?q=restuarant", "img[src~=(?i)\\.(png|jpe?g|fig)]");
+		scrape.extractDataRequestToDetail("https://www.yp.com.kh/search_results?q=restuarant", "grid_element");
 	
 	}
 	
@@ -153,6 +153,34 @@ public class ScrapeModule {
 		}
 	}
 	
+	private void extractDataRequestToDetail(String url , String pattern){
+		Document document = connectUrl(url);
+		try{
+			Elements frags= document.getElementsByClass(pattern);
+			for(Element frag: frags){
+				//System.out.println(frag);
+
+				Elements links= frag.select("div.mid_section > a");
+				//System.out.println(links);
+				for(Element link : links){
+					//System.out.println(link.attr("href"));
+
+					Document doc=connectUrl("https://www.yp.com.kh/"+link.attr("href").toString());
+					Elements els=doc.getElementsByClass("tab-content");
+					System.out.println(els);
+					for(Element lDetail : els){
+						//Elements linkmaps = lDetail.getElementsByTag("div.tab-content");
+						//System.out.println(linkmaps);
+
+					}
+
+				}
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	private void writeToFile(String f,String text){
 		
